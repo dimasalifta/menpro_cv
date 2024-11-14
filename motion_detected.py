@@ -24,6 +24,7 @@ while True:
     
     # Terapkan thresholding untuk fokus pada area yang berubah
     thresh_frame = cv2.threshold(delta_frame, 30, 255, cv2.THRESH_BINARY)[1]
+    
     # Dilate untuk menutup lubang kecil di area objek bergerak
     thresh_frame = cv2.dilate(thresh_frame, None, iterations=2)
     
@@ -33,10 +34,12 @@ while True:
     # Gambarkan persegi di sekitar area yang bergerak
     for contour in contours:
         if cv2.contourArea(contour) < 1000:  # Abaikan area kecil (menghindari noise)
+            
             continue
         (x, y, w, h) = cv2.boundingRect(contour)
         cv2.rectangle(frame2, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
+        cv2.putText(frame2,'Motion Detected',(60,370),cv2.FONT_HERSHEY_COMPLEX,1,(0,0,255),3)
+        
     # Tampilkan frame hasil dengan deteksi gerakan
     cv2.imshow("Deteksi Gerakan", frame2)
     cv2.imshow("Threshold Frame", thresh_frame)

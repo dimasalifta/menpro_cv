@@ -1,13 +1,24 @@
 import cv2
 import numpy as np
 
+# Fungsi kosong untuk trackbar (diperlukan oleh OpenCV)
+def nothing(x):
+    pass
+
 # Buka kamera (gunakan 0 untuk kamera utama)
 cap = cv2.VideoCapture(0)
 
-# Tentukan rentang warna HSV untuk bola yang ingin dideteksi (contoh: bola berwarna biru)
-# Sesuaikan nilai ini berdasarkan warna bola yang akan dideteksi
-lower_hsv = np.array([100, 150, 70])  # Batas bawah HSV
-upper_hsv = np.array([140, 255, 255]) # Batas atas HSV
+# Buat jendela untuk menampilkan video dan trackbar
+cv2.namedWindow("Deteksi Bola")
+cv2.namedWindow("Trackbars")
+
+# Membuat trackbar untuk mengatur rentang HSV
+cv2.createTrackbar("Lower Hue", "Trackbars", 0, 180, nothing)
+cv2.createTrackbar("Lower Saturation", "Trackbars", 120, 255, nothing)
+cv2.createTrackbar("Lower Value", "Trackbars", 70, 255, nothing)
+cv2.createTrackbar("Upper Hue", "Trackbars", 10, 180, nothing)
+cv2.createTrackbar("Upper Saturation", "Trackbars", 255, 255, nothing)
+cv2.createTrackbar("Upper Value", "Trackbars", 255, 255, nothing)
 
 while True:
     # Baca frame dari video
@@ -17,6 +28,18 @@ while True:
 
     # Ubah frame ke ruang warna HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    # Dapatkan nilai trackbar untuk batas bawah dan atas HSV
+    lower_hue = cv2.getTrackbarPos("Lower Hue", "Trackbars")
+    lower_saturation = cv2.getTrackbarPos("Lower Saturation", "Trackbars")
+    lower_value = cv2.getTrackbarPos("Lower Value", "Trackbars")
+    upper_hue = cv2.getTrackbarPos("Upper Hue", "Trackbars")
+    upper_saturation = cv2.getTrackbarPos("Upper Saturation", "Trackbars")
+    upper_value = cv2.getTrackbarPos("Upper Value", "Trackbars")
+
+    # Set nilai batas bawah dan atas HSV
+    lower_hsv = np.array([lower_hue, lower_saturation, lower_value])
+    upper_hsv = np.array([upper_hue, upper_saturation, upper_value])
 
     # Buat mask berdasarkan rentang HSV yang ditentukan
     mask = cv2.inRange(hsv, lower_hsv, upper_hsv)
