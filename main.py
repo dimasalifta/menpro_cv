@@ -19,6 +19,6 @@ cv2.imshow('frame 1', img)
 # cv2.imshow('frame 2', img_gray)
 # cv2.imshow('frame 3', img_resized)
 # cv2.imshow('frame 4', img_crop)
-
+cv2.imwrite('rapip_edited.jpg',img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
