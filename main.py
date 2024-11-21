@@ -6,7 +6,7 @@ img_resized = cv2.resize(img,(200,200))
 
 
 
-img_crop = img_resized[0:100,0:200]
+img_crop = img_resized[0:300,0:600]
 
 cv2.line(img,(0,0),(400,400),(0,0,255),5) #BGR
 
